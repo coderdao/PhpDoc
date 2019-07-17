@@ -25,7 +25,7 @@ class ConstructRightMenuLogic
             $return .= '<blockquote class="layui-elem-quote layui-quote-nm right-item-title">'.$d.'</blockquote>
             <ul class="right-item">';
             foreach( $file as $one ) {
-                $return .= '<li><a href="#'.base64_encode($one['requestUrl']).'"><cite>'.$one['methodName'].'</cite><em>'.$one['requestUrl'].'</em></a></li>';
+                $return .= '<li class=""><a href="#'.base64_encode($one['requestUrl']).'"><cite>'.$one['methodName'].'</cite><em>'.$one['requestUrl'].'</em></a></li>';
             }
             $return .= '</ul>';
         }
