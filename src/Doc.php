@@ -136,67 +136,7 @@ class Doc
     private function parse($data,$fileName)
     {
         $fileName = basename($fileName,'.php');
-        $return = array();
-        preg_match_all('/(public|private|protected)?\s*function\s+(?<funcName>.*?)\(/', $data, $matches);
-        $return['funcName'] = !empty($matches['funcName'][0]) ? $matches['funcName'][0] : '[null]';
-        preg_match_all('/\/\*\*\s+\*\s+(?<methodName>.*?)\s+\*/s', $data, $matches);
-        $return['methodName'] = !empty($matches['methodName'][0]) ? $matches['methodName'][0] : '[null]';
-        preg_match_all('/\s+\*\s+\@method\s+(?<requestName>.*)?.*/', $data, $matches);
-        $return['requestName'] = !empty($matches['requestName'][0]) ? $matches['requestName'][0] : '[null]';
-        preg_match_all('/\s+\*\s+\@url\s+(?<requestUrl>.*)?.*/', $data, $matches);
-        $return['requestUrl'] = !empty($matches['requestUrl'][0]) ? $matches['requestUrl'][0] : '[null]';
-        if($return['requestName']=='[null]' and $return['requestUrl']=='[null]'){
-            return false;
-        }
-        if($this->controllerChange == true){
-            $return['requestUrl'] = str_replace('{controller}',$this->humpToLine($fileName,$this->controllerTimes),$return['requestUrl']);
-        }
-        if($this->methodChange == true){
-            $return['requestUrl'] = str_replace('{action}',$this->humpToLine($return['funcName'],$this->methodTimes),$return['requestUrl']);
-        }
-        $return['requestUrl'] = str_replace('{url}',$this->url,$return['requestUrl']);
 
-        preg_match_all('/\s+\*\s+@param\s+(.*?)\s+(.*?)\s+(.*?)\s/', $data, $matches);
-        if(empty($matches[1])){
-            $return['param'] = array();
-        }else{
-            for($i=0;$i<count($matches[1]);$i++){
-                $type = !empty($matches[1][$i]) ? $matches[1][$i] : '[null]';
-                $var = !empty($matches[2][$i]) ? $matches[2][$i] : '[null]';
-                $about = !empty($matches[3][$i]) ? $matches[3][$i] : '[null]';
-                $return['param'][] = array(
-                    'type' => $type,
-                    'var' => $var,
-                    'about' => $about,
-                );
-            }
-        }
-        preg_match_all('/\s+\*\s+@return\s+(.*?)\s+(.*?)\s+(.*?)\s/', $data, $matches);
-        $return['return'] = array();
-        if(empty($matches[1])){
-            $return['return'] = array();
-        }else{
-            for($i=0;$i<count($matches[1]);$i++){
-                $type = !empty($matches[1][$i]) ? $matches[1][$i] : '[null]';
-                $var = !empty($matches[2][$i]) ? $matches[2][$i] : '[null]';
-                $about = !empty($matches[3][$i]) ? $matches[3][$i] : '[null]';
-                if(strpos($about,'*/') !== false){
-                    $about = $var;
-                    $var = '';
-                }
-
-
-                if($var!='*/' and $var!=''){
-                    // echo "<script>console.log('{$fileName}-{$return['funcName']}-{$var}')</script>";
-                    $return['return'][] = array(
-                        'type' => $type,
-                        'var' => $var,
-                        'about' => $about,
-                    );
-                }
-
-            }
-        }
 
         return $return;
 

@@ -1,6 +1,7 @@
 <?php
 /**
  * Function: 注释解析器
+ * Description: 解析每一条可以生成API文档的注释成数组
  * Abo 2019/7/17 20:19
  * Email: abo2013@foxmail.com
  */
@@ -13,7 +14,11 @@ class PaseComentLogic
     private $paseRet = [];
     private $data, $fileName;
 
-    public function __construct( $data, $fileName )
+    /**
+     * @param string $data 注释文本 catchEvery返回的每个元素
+     * @param string $fileName 文件名
+     */
+    public function __construct( string $data, string $fileName )
     {
         $this->data = $data;
         $this->fileName = $fileName;
