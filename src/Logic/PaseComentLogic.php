@@ -54,6 +54,10 @@ class PaseComentLogic
             $matches
         );
 
+        // 方法可见性
+        $this->paseRet['funcVisibility'] =
+            !isset( $matches[1][0] ) ? $matches[1][0] : 'default';
+
         return $this->paseRet['funcName'] =
             !empty( $matches[ 'funcName' ][0] ) ? $matches[ 'funcName' ][0] : '[null]';
     }

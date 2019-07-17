@@ -49,7 +49,7 @@ class ConstructTableLogic
     private function constructTitle()
     {
         $this->tableHtml = '<div id="'.base64_encode( $this->data['requestUrl']).'" class="api-main">
-        <div class="title">'. $this->data['methodName'].'</div>
+        <div class="title '.$this->data['funcVisibility'].'">'. $this->data['methodName'].'</div>
         <div class="body">
             <table class="layui-table">
                 <thead>
