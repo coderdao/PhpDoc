@@ -1,38 +1,41 @@
 # PhpDoc
 
-#### 介绍
+#### 介绍 ( Introduction )
+```text
+需有 @method 或 @url 才会产生文档,其他按 Idea 提示 填写注解即可
+[PHP注解参考](https://github.com/yinggaozhen/doc-demo/tree/master/php)
 
-参考阅读 [PHP注解](https://github.com/yinggaozhen/doc-demo/tree/master/php)
+It takes @method or @url to be useful, Others follow the Idea prompts to fill in the notes.
+According to the prompt of Idea, fill in the note, but you must have @method or @url to be useful
+[PHP Note Reference](https://github.com/yinggaozhen/doc-demo/tree/master/php)
+```
 
-#### 软件架构
-软件架构说明
+#### 使用说明 ( Usage )
 
+1.安装扩展 ( Installing the extension )
+```text
+composer require abo/phpdoc
+```
 
-#### 安装教程
+2.填写方法注解 ( Fill in method notes )
+```text
+/**
+ * 列表
+ * @url /fasterapi/head_img
+ * @method HeadImgController::index
+ * @param string img_title 头图
+ * @param string img_src 路径
+ * @param string jump_url_intro 跳转介绍
+ * @param string jump_url 跳转路径
+ *
+ * @return \Illuminate\Http\JsonResponse Json json数组
+ * @throws ApiException Json 接口异常
+ * @throws \Abo\Generalutil\V1\Exceptions\PageException Html 页面异常
+ */
+```
 
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 使用说明
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 参与贡献
-
-1. Fork 本仓库
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
-
-
-#### 码云特技
-
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+3. 运行脚本 ( Run the script )
+```text
+    $Doc = new \Abo\Phpdoc\Doc( './app/Http/Controllers', './' );
+    return $Doc->make( true );
+```
