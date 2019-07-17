@@ -24,21 +24,13 @@ class PaseComentLogic
         $fileName = basename( $fileName,'.php' );
         $return = array();
 
-        $this->paseFunctionName();
-        $this->paseMethodName();
-        $this->paseClassNameOrUrl();
-
-        if($return['requestName']=='[null]' and $return['requestUrl']=='[null]'){
+        list( $requestName, $requestUrl ) = $this->paseClassNameOrUrl();
+        if( '[null]' == $requestName &&  '[null]' == $requestUrl ) { // 无备注 @method || @url 则放弃解析
             return false;
         }
 
-        if($this->controllerChange == true){
-            $return['requestUrl'] = str_replace('{controller}',$this->humpToLine($fileName,$this->controllerTimes),$return['requestUrl']);
-        }
-        if($this->methodChange == true){
-            $return['requestUrl'] = str_replace('{action}',$this->humpToLine($return['funcName'],$this->methodTimes),$return['requestUrl']);
-        }
-        $return['requestUrl'] = str_replace('{url}',$this->url,$return['requestUrl']);
+        $this->paseFunctionName();
+        $this->paseMethodName();
 
         preg_match_all('/\s+\*\s+@param\s+(.*?)\s+(.*?)\s+(.*?)\s/', $data, $matches);
         if(empty($matches[1])){
@@ -87,7 +79,7 @@ class PaseComentLogic
     }
 
     /**
-     * 代码方法名 解析
+     * 解析 代码方法名
      * @example public function index => index
      * @return string
      */
@@ -104,7 +96,7 @@ class PaseComentLogic
     }
 
     /**
-     * 注释方法名 解析
+     * 解析 注释方法名
      * @example: * 列表 => 列表
      * @return string
      */
@@ -121,7 +113,7 @@ class PaseComentLogic
     }
 
     /**
-     * 命名路径 & url 解析
+     * 解析 命名路径 & url
      * @example: @method HeadImgController::index   => HeadImgController::index
      * @example: @url /fasterapi/head_img           => /fasterapi/head_img
      * @return array
