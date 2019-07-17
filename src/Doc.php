@@ -56,6 +56,7 @@ class Doc
                     $rightList[ basename( $fileName ) ][] = array(
                         'methodName' => $infoData[ 'methodName' ],
                         'requestUrl' => $infoData[ 'requestUrl' ],
+                        'funcVisibility' => $infoData[ 'funcVisibility' ],
                     );
                     $inputData .= $ConstructTable->data( $infoData )->construct(); // 创建文档
                 }
