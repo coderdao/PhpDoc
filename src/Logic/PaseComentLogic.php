@@ -31,6 +31,7 @@ class PaseComentLogic
 
         $this->paseFunctionName();
         $this->paseMethodName();
+        $this->paseParam();
 
 
         preg_match_all('/\s+\*\s+@return\s+(.*?)\s+(.*?)\s+(.*?)\s/', $data, $matches);
@@ -129,13 +130,11 @@ class PaseComentLogic
 
     /**
      * 解析 参数
-     * @example: @param HeadImgController::index   => HeadImgController::index
-     * @example: @url /fasterapi/head_img           => /fasterapi/head_img
+     * @example: @param string img_title 头图   => img_title string 头图
      * @return array
      */
     protected function paseParam()
     {
-
         preg_match_all(
             '/\s+\*\s+@param\s+(.*?)\s+(.*?)\s+(.*?)\s/',
             $this->data,
@@ -143,7 +142,7 @@ class PaseComentLogic
         );
 
         if( empty( $matches[ 1 ] ) ) {
-            $return['param'] = array();
+            $this->paseRet[ 'param' ] = array();
         } else {
             $count4Matches = count( $matches[ 1 ] );
 
@@ -152,12 +151,14 @@ class PaseComentLogic
                 $var = !empty( $matches[2][$i] ) ? $matches[2][$i] : '[null]';
                 $about = !empty( $matches[3][$i] ) ? $matches[3][$i] : '[null]';
 
-                $return['param'][] = [
+                $this->paseRet[ 'param' ][] = [
                     'type' => $type,
                     'var' => $var,
                     'about' => $about,
                 ];
             }
         }
+
+        return $this->paseRet['param'];
     }
 }
