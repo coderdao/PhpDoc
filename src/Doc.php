@@ -32,10 +32,10 @@ class Doc
 
     /**
      * 开始执行生成
-     * @param bool $fetch 是否直接实时输出，默认true，否则生成文件。
+     * @param bool $isFile 是否生成文件，默认false，否则直接实时输出。
      * @return bool|mixed|string
      */
-    public function make( $fetch = true )
+    public function make( $isFile = false )
     {
         $inputData = ''; // 主体部分表格
         $rightList = []; // 侧边栏列表
@@ -67,7 +67,7 @@ class Doc
         $tempData = str_replace( '{right}', $MenuLogic->construct( $rightList ), $tempData );
         $tempData = str_replace( '{date}', date( 'Y-m-d H:i:s' ), $tempData );
 
-        if( !$fetch ){
+        if( $isFile ){
             return file_put_contents( $this->savePath . $this->name . '.html', $tempData );
         }else{
             return $tempData;
