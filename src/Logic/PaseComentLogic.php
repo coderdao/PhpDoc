@@ -31,6 +31,7 @@ class PaseComentLogic
 
         $this->paseParam();     // 请求参数
         $this->paseReturn();    // 返回结果
+        $this->paseThrows();    // 异常
 
         return $this->paseRet;
     }
@@ -146,7 +147,7 @@ class PaseComentLogic
         );
 
         if ( empty( $matches[1] ) ) {
-            $return['return'] = [];
+            $return[ 'return' ] = [];
         } else {
             $count4Matches = count( $matches[ 1 ] );
 
@@ -172,7 +173,7 @@ class PaseComentLogic
             }
         }
 
-        return $this->paseRet['return'];
+        return $this->paseRet[ 'return' ];
     }
 
     /**
@@ -204,7 +205,6 @@ class PaseComentLogic
 
 
                 if ( $var != '*/' && $var != '' ) {
-                    // echo "<script>console.log('{$fileName}-{$return['funcName']}-{$var}')</script>";
                     $return[ 'return' ][] = [
                         'type' => $type,
                         'var' => $var,
@@ -215,6 +215,6 @@ class PaseComentLogic
             }
         }
 
-        return $this->paseRet['return'];
+        return $this->paseRet[ 'throws' ];
     }
 }
