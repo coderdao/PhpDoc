@@ -77,11 +77,12 @@ class Doc
     /**
      * 设置项目名称
      * @param string $name 项目名称
-     * @return void
+     * @return self
      */
-    public function setName( $name )
+    public function docName( $name )
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
