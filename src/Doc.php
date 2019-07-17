@@ -14,18 +14,11 @@ class Doc
 {
     public $url = 'http://localhost';
 
-    private $mainRegex = '/(\/\*\*.*?\*\s(api)?.*?\*\/\s*(public|private|protected)?\s*function\s+.*?\s*?\()/s';
+    const MAIN_REGEX = '/(\/\*\*.*?\*\s(api)?.*?\*\/\s*(public|private|protected)?\s*function\s+.*?\s*?\()/s';
     protected $documentPath;
     protected $savePath;
     protected $name = 'api';
-    protected $controllerChange = true;
-    protected $controllerTimes = 1;
-    protected $methodChange = true;
-    protected $methodTimes = 2;
 
-    public static function test(){
-        echo 'hello';
-    }
     public function __construct( $documentPath, $savePath=null )
     {
         $this->documentPath = $documentPath;
@@ -37,6 +30,46 @@ class Doc
     }
 
     /**
+     * 开始执行生成
+     * @param bool $fetch 是否直接实时输出，默认true，否则生成文件。
+     * @return bool|mixed|string
+     */
+    public function make( $fetch = true )
+    {
+        $fileList = array();
+        $this->getFileList( $this->documentPath, $fileList );
+        $inputData = ''; // 主体部分表格
+        $rightList = array(); // 侧边栏列表
+        foreach( $fileList as $fileName ){
+            $fileData = file_get_contents( $fileName );
+            $data = $this->catchEvery( $fileData );
+
+            foreach ( $data as $one ) {
+                $infoData = $this->parse( $one,$fileName );
+                if( $infoData != false ){
+                    $rightList[ basename( $fileName ) ][] = array(
+                        'methodName' => $infoData[ 'methodName' ],
+                        'requestUrl' => $infoData[ 'requestUrl' ],
+                    );
+                    $inputData .= $this->makeTable( $infoData );
+                }
+            }
+        }
+
+        $tempData = file_get_contents( dirname(__FILE__) . '/Console/stubs/document.stub' );
+        $tempData = str_replace( '{name}', $this->name, $tempData );
+        $tempData = str_replace( '{main}', $inputData, $tempData );
+        $tempData = str_replace( '{right}', $this->makeRight( $rightList ), $tempData );
+        $tempData = str_replace( '{date}', date( 'Y-m-d H:i:s' ), $tempData );
+
+        if( !$fetch ){
+            return file_put_contents( $this->savePath . $this->name . '.html', $tempData );
+        }else{
+            return $tempData;
+        }
+    }
+
+    /**
      * 设置项目名称
      * @param string $name 项目名称
      * @return void
@@ -44,50 +77,6 @@ class Doc
     public function setName( $name )
     {
         $this->name = $name;
-    }
-
-    /**
-     * 设置是否开启驼峰转下划线
-     * @param bool $controller 文件名 true/false
-     * @param bool $method 方法名 true/false
-     * @return void
-     */
-    public function setChange( $controller=true, $method=true )
-    {
-        $this->controllerChange = $controller;
-        $this->methodChange = $method;
-    }
-
-    /**
-     * 驼峰转下划线转换条件 (出现几次大写字母才转换)
-     * @param integer $controller 文件名
-     * @param integer $method 方法名
-     * @return void
-     */
-    public function setTimes( $controller=1, $method=2 )
-    {
-        $this->controllerTimes = $controller;
-        $this->methodTimes = $method;
-    }
-
-    /**
-     * 大驼峰命名法转下划线命名法
-     * @param string $str 字符串
-     * @param integer $times 出现几次大写字母才转换,默认1次
-     * @return string
-     */
-    private function humpToLine( $str, $times=1 )
-    {
-        if(preg_match_all('/[A-Z]/',$str) >= $times){
-            $str = preg_replace_callback('/([A-Z]{1})/',function($matches){
-                return '_'.strtolower($matches[0]);
-            },$str);
-            if($str[0]=='_'){
-                $str = substr_replace($str,'',0,1);
-            }
-            return $str;
-        }
-        return $str;
     }
 
     /**
@@ -123,7 +112,7 @@ class Doc
      */
     private function catchEvery( $data )
     {
-        if ( preg_match_all( $this->mainRegex, $data, $matches ) ) {
+        if ( preg_match_all( self::MAIN_REGEX, $data, $matches ) ) {
             return $matches[1];
         }
 
@@ -174,45 +163,4 @@ class Doc
 
         return $return;
     }
-
-    /**
-     * 开始执行生成
-     * @param bool $fetch 是否直接实时输出，默认true，否则生成文件。
-     * @return bool|mixed|string
-     */
-    public function make( $fetch = true )
-    {
-        $fileList = array();
-        $this->getFileList( $this->documentPath, $fileList );
-        $inputData = ''; // 主体部分表格
-        $rightList = array(); // 侧边栏列表
-        foreach( $fileList as $fileName ){
-            $fileData = file_get_contents( $fileName );
-            $data = $this->catchEvery( $fileData );
-
-            foreach ( $data as $one ) {
-                $infoData = $this->parse( $one,$fileName );
-                if( $infoData != false ){
-                    $rightList[ basename( $fileName ) ][] = array(
-                        'methodName' => $infoData[ 'methodName' ],
-                        'requestUrl' => $infoData[ 'requestUrl' ],
-                    );
-                    $inputData .= $this->makeTable( $infoData );
-                }
-            }
-        }
-
-        $tempData = file_get_contents( dirname(__FILE__) . '/Console/stubs/document.stub' );
-        $tempData = str_replace( '{name}', $this->name, $tempData );
-        $tempData = str_replace( '{main}', $inputData, $tempData );
-        $tempData = str_replace( '{right}', $this->makeRight( $rightList ), $tempData );
-        $tempData = str_replace( '{date}', date( 'Y-m-d H:i:s' ), $tempData );
-
-        if( !$fetch ){
-            return file_put_contents( $this->savePath . $this->name . '.html', $tempData );
-        }else{
-            return $tempData;
-        }
-    }
-
 }
