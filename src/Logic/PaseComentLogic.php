@@ -46,7 +46,7 @@ class PaseComentLogic
      * @example public function index => index
      * @return string
      */
-    protected function paseFunctionName()
+    private function paseFunctionName()
     {
         preg_match_all(
             '/(public|private|protected)?\s*function\s+(?<funcName>.*?)\(/',
@@ -63,7 +63,7 @@ class PaseComentLogic
      * @example: * 列表 => 列表
      * @return string
      */
-    protected function paseMethodName()
+    private function paseMethodName()
     {
         preg_match_all(
             '/\/\*\*\s+\*\s+(?<methodName>.*?)\s+\*/s',
@@ -81,7 +81,7 @@ class PaseComentLogic
      * @example: @url /fasterapi/head_img           => /fasterapi/head_img
      * @return array
      */
-    protected function paseClassNameOrUrl()
+    private function paseClassNameOrUrl()
     {
         // 类名路径
         preg_match_all(
@@ -109,7 +109,7 @@ class PaseComentLogic
      * @example: @param string img_title 头图   => img_title string 头图
      * @return array
      */
-    protected function paseParam()
+    private function paseParam()
     {
         preg_match_all(
             '/\s+\*\s+@param\s+(.*?)\s+(.*?)\s+(.*?)\s/',
@@ -143,7 +143,7 @@ class PaseComentLogic
      * @example: @return JsonResponse Json json数组  => Json JsonResponse json数组
      * @return array
      */
-    protected function paseReturn()
+    private function paseReturn()
     {
         preg_match_all(
             '/\s+\*\s+@return\s+(.*?)\s+(.*?)\s+(.*?)\s/',
@@ -186,7 +186,7 @@ class PaseComentLogic
      * @example: @return JsonResponse Json json数组  => Json JsonResponse json数组
      * @return array
      */
-    protected function paseThrows()
+    private function paseThrows()
     {
         preg_match_all(
             '/\s+\*\s+@throws\s+(.*?)\s+(.*?)\s+(.*?)\s/',

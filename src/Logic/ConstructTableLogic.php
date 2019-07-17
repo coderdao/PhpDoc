@@ -11,7 +11,7 @@ namespace Abo\Phpdoc\Logic;
 
 class ConstructTableLogic
 {
-    private $data, $tableHtml; // 每个API的信息 由parse返回的
+    private $data, $tableHtml = ''; // 每个API的信息 由parse返回的
 
     public function __construct( array $paseData )
     {
@@ -23,6 +23,10 @@ class ConstructTableLogic
         $this->constructTitle();
     }
 
+    /**
+     * 构建头部
+     * @return string
+     */
     private function constructTitle()
     {
         $this->tableHtml = '<div id="'.base64_encode( $this->data['requestUrl']).'" class="api-main">
@@ -37,5 +41,7 @@ class ConstructTableLogic
                 </thead>
             </table>
         </div>';
+
+        return $this->tableHtml;
     }
 }
