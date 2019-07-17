@@ -1,0 +1,21 @@
+{
+    "name": "abo/phpdoc",
+    "description": "注释自动生成API文档",
+    "keywords": [ "php", "注释生成Api文档" ],
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "abo",
+            "email": "abo2013@foxmail.com",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Abo\\Phpdoc\\": "src"
+        }
+    },
+    "require": {
+        "php": ">=7.0.0"
+    }
+}
