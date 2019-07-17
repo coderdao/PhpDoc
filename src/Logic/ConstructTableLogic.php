@@ -18,12 +18,21 @@ class ConstructTableLogic
         $this->data = $paseData;
     }
 
+    /**
+     * 设置文档数据
+     * @param array $data 每个API的信息 由parse返回的
+     * @return $this
+     */
     public function data( array $paseData )
     {
         $this->data = $paseData;
         return $this;
     }
 
+    /**
+     * 每个文档生成表格
+     * @return string html代码
+     */
     public function construct()
     {
         if ( $this->data ) { return ''; }

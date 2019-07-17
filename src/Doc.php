@@ -57,7 +57,7 @@ class Doc
                         'methodName' => $infoData[ 'methodName' ],
                         'requestUrl' => $infoData[ 'requestUrl' ],
                     );
-                    $inputData .= $this->makeTable( $infoData );
+                    $inputData .= $ConstructTable->data( $infoData )->construct(); // 创建文档
                 }
             }
         }
@@ -65,7 +65,7 @@ class Doc
         $tempData = file_get_contents( dirname(__FILE__) . '/Console/stubs/document.stub' );
         $tempData = str_replace( '{name}', $this->name, $tempData );
         $tempData = str_replace( '{main}', $inputData, $tempData );
-        $tempData = str_replace( '{right}', $MenuLogic->construct( $rightList ), $tempData );
+        $tempData = str_replace( '{right}', $ConstructMenu->construct( $rightList ), $tempData ); // 创建右侧目录
         $tempData = str_replace( '{date}', date( 'Y-m-d H:i:s' ), $tempData );
 
         if( $isFile ){
@@ -139,11 +139,7 @@ class Doc
         return ( new PaseComentLogic( $data, $fileName ) )->parse();
     }
 
-    /**
-     * 每个文档生成表格
-     * @param array $data 每个API的信息 由parse返回的
-     * @return string html代码
-     */
+
     private function makeTable( $data )
     {
         $return = ( new ConstructTableLogic( $data ) )->construct();
