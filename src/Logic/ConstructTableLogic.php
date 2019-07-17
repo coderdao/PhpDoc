@@ -47,27 +47,29 @@ class ConstructTableLogic
     }
 
     /**
-     * 构建头部
+     * 构建 数组内容: 请求参数/返回
      * @return string
      */
-    private function constructParam()
+    private function constructArray( string $constructArrayKey, string $label )
     {
+        if ( !$constructArrayKey ) { return $this->tableHtml; }
+
         // 请求参数
         $data = $this->data;
-        if( !isset( $data['param'] ) || !$data['param'] ){ return $this->tableHtml; }
+        if( !isset( $data[ $constructArrayKey ] ) || !$data[ $constructArrayKey ] ){ return $this->tableHtml; }
 
         $this->tableHtml .= '<div class="body">
                 <table class="layui-table">
                     <thead>
                         <tr> 
-                            <th> 参数名称 </th> 
-                            <th> 参数类型 </th> 
-                            <th> 参数说明 </th> 
+                            <th>'.$label.'名称</th> 
+                            <th>'.$label.'类型</th> 
+                            <th>'.$label.'说明</th> 
                         </tr>
                     </thead>
                     <tbody>';
 
-        foreach( $data['param'] as $param ){
+        foreach( $data[ $constructArrayKey ] as $param ){
             $this->tableHtml .= "<tr> 
                     <td>{$param['var']}</td> 
                     <td>{$param['type']}</td> 
