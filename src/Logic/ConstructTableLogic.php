@@ -13,11 +13,6 @@ class ConstructTableLogic
 {
     private $data, $tableHtml = ''; // 每个API的信息 由parse返回的
 
-    public function __construct( array $paseData = [] )
-    {
-        $this->data = $paseData;
-    }
-
     /**
      * 设置文档数据
      * @param array $data 每个API的信息 由parse返回的
