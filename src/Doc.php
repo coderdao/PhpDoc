@@ -12,9 +12,9 @@ use Abo\Phpdoc\Logic\PaseComentLogic;
 
 class Doc
 {
-    public $url = 'http://localhost';
-
     const MAIN_REGEX = '/(\/\*\*.*?\*\s(api)?.*?\*\/\s*(public|private|protected)?\s*function\s+.*?\s*?\()/s';
+
+    public $url = 'http://localhost';
     protected $documentPath;
     protected $savePath;
     protected $name = 'api';

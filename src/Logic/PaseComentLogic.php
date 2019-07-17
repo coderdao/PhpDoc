@@ -135,7 +135,7 @@ class PaseComentLogic
             }
         }
 
-        return $this->paseRet['param'];
+        return true;
     }
 
     /**
@@ -152,7 +152,7 @@ class PaseComentLogic
         );
 
         if ( empty( $matches[1] ) ) {
-            $return[ 'return' ] = [];
+            $this->paseRet[ 'return' ] = [];
         } else {
             $count4Matches = count( $matches[ 1 ] );
 
@@ -167,8 +167,8 @@ class PaseComentLogic
 
 
                 if ( $var != '*/' && $var != '' ) {
-                    // echo "<script>console.log('{$fileName}-{$return['funcName']}-{$var}')</script>";
-                    $return[ 'return' ][] = [
+                    // echo "<script>console.log('{$fileName}-{$this->paseRet['funcName']}-{$var}')</script>";
+                    $this->paseRet[ 'return' ][] = [
                         'type' => $type,
                         'var' => $var,
                         'about' => $about,
@@ -178,7 +178,7 @@ class PaseComentLogic
             }
         }
 
-        return $this->paseRet[ 'return' ];
+        return true;
     }
 
     /**
@@ -195,7 +195,7 @@ class PaseComentLogic
         );
 
         if ( empty( $matches[1] ) ) {
-            $return[ 'throws' ] = [];
+            $this->paseRet[ 'throws' ] = [];
         } else {
             $count4Matches = count( $matches[ 1 ] );
 
@@ -210,7 +210,7 @@ class PaseComentLogic
 
 
                 if ( $var != '*/' && $var != '' ) {
-                    $return[ 'return' ][] = [
+                    $this->paseRet[ 'return' ][] = [
                         'type' => $type,
                         'var' => $var,
                         'about' => $about,
@@ -220,6 +220,6 @@ class PaseComentLogic
             }
         }
 
-        return $this->paseRet[ 'throws' ];
+        return true;
     }
 }
