@@ -338,7 +338,7 @@ class Doc
                 }
             }
         }
-        $tempData = file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'temp.html');
+        $tempData = file_get_contents(dirname(__FILE__).'/Console/stubs/document.stub');
         $tempData = str_replace('{name}',$this->name,$tempData);
         $tempData = str_replace('{main}',$inputData,$tempData);
         $tempData = str_replace('{right}',$this->makeRight($rightList),$tempData);
