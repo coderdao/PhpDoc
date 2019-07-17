@@ -98,16 +98,18 @@ class Doc
             $fileList = array();
             return;
         }
+
         $data = scandir( $path );
         foreach ( $data as $one ) {
             if ( $one == '.' || $one == '..' ) { continue; }
             $onePath = $path . DIRECTORY_SEPARATOR . $one;
-            $isDir = is_dir($onePath);
-            $extName = substr($one, -4, 4);
+
+            $isDir = is_dir( $onePath );
+            $extName = substr( $one, -4, 4 );
             if ($isDir == false and $extName == '.php') {
                 $fileList[] = $onePath;
-            } elseif ($isDir == true and $all == true) {
-                $this->getFileList($onePath, $fileList, $all);
+            } elseif ( $isDir == true and $all == true ) {
+                $this->getFileList( $onePath, $fileList, $all );
             }
         }
     }
