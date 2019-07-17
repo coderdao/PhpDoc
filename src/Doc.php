@@ -7,6 +7,8 @@
 
 namespace Abo\Phpdoc;
 
+use Abo\Phpdoc\Logic\PaseComentLogic;
+
 class Doc
 {
     public $url = 'http://localhost';
@@ -133,17 +135,15 @@ class Doc
      * @param string $fileName 文件名
      * @return array|bool
      */
-    private function parse($data,$fileName)
+    private function parse( $data, $fileName )
     {
         $fileName = basename($fileName,'.php');
 
-
-        return $return;
-
+        return ( new PaseComentLogic( $data, $fileName ) )->parse();
     }
 
     /**
-     * 每个API生成表格
+     * 每个文档生成表格
      * @param array $data 每个API的信息 由parse返回的
      * @return string html代码
      */
@@ -161,11 +161,13 @@ class Doc
                 </thead>
             </table>
         </div>';
-        if(count($data['param'])!=0){
+
+        // 请求参数
+        if( $data['param'] ){
             $return .= '                    <div class="body">
             <table class="layui-table">
                 <thead>
-                    <tr> <th> 请求名称 </th> <th> 请求类型 </th> <th> 请求说明 </th> </tr>
+                    <tr> <th> 参数名称 </th> <th> 参数类型 </th> <th> 参数说明 </th> </tr>
                 </thead>
                 <tbody>';
             foreach($data['param'] as $param){
@@ -176,7 +178,9 @@ class Doc
             </table>
         </div>';
         }
-        if(count($data['return'])!=0){
+
+        // 返回
+        if( $data['return'] ){
             $return .= '<div class="body">
             <table class="layui-table">
                 <thead>
