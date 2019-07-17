@@ -12,13 +12,14 @@ According to the prompt of Idea, fill in the note, but you must have @method or 
 
 #### 使用说明 ( Usage )
 
-1.安装扩展 ( Installing the extension )
+#####1.安装扩展 ( Installing the extension )
 ```text
 composer require abo/phpdoc
 ```
 
-2.填写方法注解 ( Fill in method notes )
+#####2.填写方法注解 ( Fill in method notes )
 ```text
+/**
  * 列表
  * @url /fasterapi/head_img
  * @method HeadImgController::index
@@ -30,10 +31,10 @@ composer require abo/phpdoc
  * @return \Illuminate\Http\JsonResponse Json json数组
  * @throws ApiException Json 接口异常
  * @throws \Abo\Generalutil\V1\Exceptions\PageException Html 页面异常
-
+*/
 ```
 
-3. 运行脚本 ( Run the script )
+#####3. 运行脚本 ( Run the script )
 ```text
     $Doc = new \Abo\Phpdoc\Doc( './app/Http/Controllers', './' );
     return $Doc->make( true );
