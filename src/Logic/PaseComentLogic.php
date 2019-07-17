@@ -107,7 +107,7 @@ class PaseComentLogic
     /**
      * 解析 请求参数
      * @example: @param string img_title 头图   => img_title string 头图
-     * @return array
+     * @return string
      */
     private function paseParam()
     {
@@ -141,7 +141,7 @@ class PaseComentLogic
     /**
      * 解析 返回
      * @example: @return JsonResponse Json json数组  => Json JsonResponse json数组
-     * @return array
+     * @return string
      */
     private function paseReturn()
     {
@@ -184,7 +184,7 @@ class PaseComentLogic
     /**
      * 解析 异常
      * @example: @return JsonResponse Json json数组  => Json JsonResponse json数组
-     * @return array
+     * @return string
      */
     private function paseThrows()
     {
