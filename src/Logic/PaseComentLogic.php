@@ -24,6 +24,10 @@ class PaseComentLogic
         $fileName = basename( $fileName,'.php' );
         $return = array();
 
+        $this->paseFunctionName();
+        $this->paseMethodName();
+        $this->paseClassNameOrUrl();
+
         if($return['requestName']=='[null]' and $return['requestUrl']=='[null]'){
             return false;
         }
@@ -101,7 +105,7 @@ class PaseComentLogic
 
     /**
      * 注释方法名 解析
-     * @example public function index => index
+     * @example: * 列表 => 列表
      * @return string
      */
     protected function paseMethodName()
@@ -118,20 +122,22 @@ class PaseComentLogic
 
     /**
      * 命名路径 & url 解析
-     * @example public function index => index
-     * @return string
+     * @example: @method HeadImgController::index   => HeadImgController::index
+     * @example: @url /fasterapi/head_img           => /fasterapi/head_img
+     * @return array
      */
     protected function paseClassNameOrUrl()
     {
+        // 类名路径
         preg_match_all(
             '/\s+\*\s+\@method\s+(?<requestName>.*)?.*/',
             $this->data,
             $matches
         );
-
         $this->paseRet['requestName'] =
             !empty($matches['requestName'][0]) ? $matches['requestName'][0] : '[null]';
 
+        // 请求url
         preg_match_all(
             '/\s+\*\s+\@url\s+(?<requestUrl>.*)?.*/',
             $this->data,
@@ -139,5 +145,7 @@ class PaseComentLogic
         );
         $this->paseRet['requestUrl'] =
             !empty($matches['requestUrl'][0]) ? $matches['requestUrl'][0] : '[null]';
+
+        return [ $this->paseRet['requestName'], $this->paseRet['requestUrl'] ];
     }
 }
