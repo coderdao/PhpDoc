@@ -19,11 +19,8 @@ class PaseComentLogic
         $this->fileName = $fileName;
     }
 
-    public function parse( $data, $fileName )
+    public function parse()
     {
-        $fileName = basename( $fileName,'.php' );
-        $return = array();
-
         list( $requestName, $requestUrl ) = $this->paseClassNameOrUrl();
         if( '[null]' == $requestName &&  '[null]' == $requestUrl ) { // 无备注 @method || @url 则放弃解析
             return false;
@@ -31,38 +28,11 @@ class PaseComentLogic
 
         $this->paseFunctionName();
         $this->paseMethodName();
-        $this->paseParam();
 
+        $this->paseParam();     // 请求参数
+        $this->paseReturn();    // 返回结果
 
-        preg_match_all('/\s+\*\s+@return\s+(.*?)\s+(.*?)\s+(.*?)\s/', $data, $matches);
-        $return['return'] = array();
-        if(empty($matches[1])){
-            $return['return'] = array();
-        }else{
-            for($i=0;$i<count($matches[1]);$i++){
-                $type = !empty($matches[1][$i]) ? $matches[1][$i] : '[null]';
-                $var = !empty($matches[2][$i]) ? $matches[2][$i] : '[null]';
-                $about = !empty($matches[3][$i]) ? $matches[3][$i] : '[null]';
-                if(strpos($about,'*/') !== false){
-                    $about = $var;
-                    $var = '';
-                }
-
-
-                if($var!='*/' and $var!=''){
-                    // echo "<script>console.log('{$fileName}-{$return['funcName']}-{$var}')</script>";
-                    $return['return'][] = array(
-                        'type' => $type,
-                        'var' => $var,
-                        'about' => $about,
-                    );
-                }
-
-            }
-        }
-
-        return $return;
-
+        return $this->paseRet;
     }
 
     /**
@@ -129,7 +99,7 @@ class PaseComentLogic
     }
 
     /**
-     * 解析 参数
+     * 解析 请求参数
      * @example: @param string img_title 头图   => img_title string 头图
      * @return array
      */
@@ -160,5 +130,91 @@ class PaseComentLogic
         }
 
         return $this->paseRet['param'];
+    }
+
+    /**
+     * 解析 返回
+     * @example: @return JsonResponse Json json数组  => Json JsonResponse json数组
+     * @return array
+     */
+    protected function paseReturn()
+    {
+        preg_match_all(
+            '/\s+\*\s+@return\s+(.*?)\s+(.*?)\s+(.*?)\s/',
+            $this->data,
+            $matches
+        );
+
+        if ( empty( $matches[1] ) ) {
+            $return['return'] = [];
+        } else {
+            $count4Matches = count( $matches[ 1 ] );
+
+            for ( $i = 0; $i < $count4Matches; $i++ ) {
+                $type = !empty( $matches[1][$i] ) ? $matches[1][$i] : '[null]';
+                $var = !empty( $matches[2][$i] ) ? $matches[2][$i] : '[null]';
+                $about = !empty( $matches[3][$i] ) ? $matches[3][$i] : '[null]';
+                if ( false !== strpos( $about,'*/' ) ) {
+                    $about = $var;
+                    $var = '';
+                }
+
+
+                if ( $var != '*/' && $var != '' ) {
+                    // echo "<script>console.log('{$fileName}-{$return['funcName']}-{$var}')</script>";
+                    $return[ 'return' ][] = [
+                        'type' => $type,
+                        'var' => $var,
+                        'about' => $about,
+                    ];
+                }
+
+            }
+        }
+
+        return $this->paseRet['return'];
+    }
+
+    /**
+     * 解析 异常
+     * @example: @return JsonResponse Json json数组  => Json JsonResponse json数组
+     * @return array
+     */
+    protected function paseThrows()
+    {
+        preg_match_all(
+            '/\s+\*\s+@throws\s+(.*?)\s+(.*?)\s+(.*?)\s/',
+            $this->data,
+            $matches
+        );
+
+        if ( empty( $matches[1] ) ) {
+            $return[ 'throws' ] = [];
+        } else {
+            $count4Matches = count( $matches[ 1 ] );
+
+            for ( $i = 0; $i < $count4Matches; $i++ ) {
+                $type = !empty( $matches[1][$i] ) ? $matches[1][$i] : '[null]';
+                $var = !empty( $matches[2][$i] ) ? $matches[2][$i] : '[null]';
+                $about = !empty( $matches[3][$i] ) ? $matches[3][$i] : '[null]';
+                if ( false !== strpos( $about,'*/' ) ) {
+                    $about = $var;
+                    $var = '';
+                }
+
+
+                if ( $var != '*/' && $var != '' ) {
+                    // echo "<script>console.log('{$fileName}-{$return['funcName']}-{$var}')</script>";
+                    $return[ 'return' ][] = [
+                        'type' => $type,
+                        'var' => $var,
+                        'about' => $about,
+                    ];
+                }
+
+            }
+        }
+
+        return $this->paseRet['return'];
     }
 }
