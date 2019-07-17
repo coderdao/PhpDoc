@@ -1,7 +1,7 @@
 {
     "name": "abo/phpdoc",
-    "description": "注释自动生成API文档",
-    "keywords": [ "php", "注释生成Api文档" ],
+    "description": "Comments automatically generate documents",
+    "keywords": [ "php", "generate PHP Class documents" ],
     "license": "Apache-2.0",
     "authors": [
         {
