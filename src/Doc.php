@@ -298,12 +298,13 @@ class Doc
      * @param array $rightList 侧边列表数组
      * @return string html代码
      */
-    private function makeRight($rightList){
+    private function makeRight( $rightList )
+    {
         $return = '';
-        foreach($rightList as $d => $file){
+        foreach( $rightList as $d => $file ) {
             $return .= '<blockquote class="layui-elem-quote layui-quote-nm right-item-title">'.$d.'</blockquote>
             <ul class="right-item">';
-            foreach($file as $one){
+            foreach( $file as $one ) {
                 $return .= '<li><a href="#'.base64_encode($one['requestUrl']).'"><cite>'.$one['methodName'].'</cite><em>'.$one['requestUrl'].'</em></a></li>';
             }
             $return .= '</ul>';
@@ -317,32 +318,34 @@ class Doc
      * @param bool $fetch 是否直接实时输出，默认true，否则生成文件。
      * @return bool|mixed|string
      */
-    public function make($fetch=true)
+    public function make( $fetch = true )
     {
         $fileList = array();
-        $this->getFileList($this->documentPath,$fileList);
+        $this->getFileList( $this->documentPath, $fileList );
         $inputData = ''; // 主体部分表格
         $rightList = array(); // 侧边栏列表
-        foreach($fileList as $fileName){
-            $fileData = file_get_contents($fileName);
-            $data = $this->catchEvery($fileData);
+        foreach( $fileList as $fileName ){
+            $fileData = file_get_contents( $fileName );
+            $data = $this->catchEvery( $fileData );
 
-            foreach ($data as $one) {
-                $infoData = $this->parse($one,$fileName);
-                if($infoData != false){
-                    $rightList[basename($fileName)][] = array(
-                        'methodName' => $infoData['methodName'],
-                        'requestUrl' => $infoData['requestUrl'],
+            foreach ( $data as $one ) {
+                $infoData = $this->parse( $one,$fileName );
+                if( $infoData != false ){
+                    $rightList[ basename( $fileName ) ][] = array(
+                        'methodName' => $infoData[ 'methodName' ],
+                        'requestUrl' => $infoData[ 'requestUrl' ],
                     );
-                    $inputData .= $this->makeTable($infoData);
+                    $inputData .= $this->makeTable( $infoData );
                 }
             }
         }
+
         $tempData = file_get_contents(dirname(__FILE__).'/Console/stubs/document.stub');
         $tempData = str_replace('{name}',$this->name,$tempData);
         $tempData = str_replace('{main}',$inputData,$tempData);
         $tempData = str_replace('{right}',$this->makeRight($rightList),$tempData);
         $tempData = str_replace('{date}',date('Y-m-d H:i:s'),$tempData);
+
         if($fetch==false){
             return file_put_contents($this->savePath.$this->name.'.html',$tempData);
         }else{
