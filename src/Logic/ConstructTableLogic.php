@@ -21,6 +21,7 @@ class ConstructTableLogic
     public function construct()
     {
         $this->constructTitle();
+        $this->constructParam();
     }
 
     /**
@@ -44,4 +45,42 @@ class ConstructTableLogic
 
         return $this->tableHtml;
     }
+
+    /**
+     * 构建头部
+     * @return string
+     */
+    private function constructParam()
+    {
+        // 请求参数
+        $data = $this->data;
+        if( !isset( $data['param'] ) || !$data['param'] ){ return $this->tableHtml; }
+
+        $this->tableHtml .= '<div class="body">
+                <table class="layui-table">
+                    <thead>
+                        <tr> 
+                            <th> 参数名称 </th> 
+                            <th> 参数类型 </th> 
+                            <th> 参数说明 </th> 
+                        </tr>
+                    </thead>
+                    <tbody>';
+
+        foreach( $data['param'] as $param ){
+            $this->tableHtml .= "<tr> 
+                    <td>{$param['var']}</td> 
+                    <td>{$param['type']}</td> 
+                    <td>{$param['about']}</td>
+                </tr>";
+        }
+
+        $this->tableHtml .= '</tbody>
+                </table>
+            </div>';
+
+        return $this->tableHtml;
+    }
+
+
 }

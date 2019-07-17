@@ -162,22 +162,7 @@ class Doc
             </table>
         </div>';
 
-        // 请求参数
-        if( $data['param'] ){
-            $return .= '                    <div class="body">
-            <table class="layui-table">
-                <thead>
-                    <tr> <th> 参数名称 </th> <th> 参数类型 </th> <th> 参数说明 </th> </tr>
-                </thead>
-                <tbody>';
-            foreach($data['param'] as $param){
-                $return .= '<tr> <td> '.$param['var'].' </td> <td> '.$param['type'].' </td> <td> '.$param['about'].' </td>
-            </tr>';
-            }
-            $return .= '</tbody>
-            </table>
-        </div>';
-        }
+
 
         // 返回
         if( $data['return'] ){
