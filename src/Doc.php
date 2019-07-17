@@ -138,12 +138,4 @@ class Doc
 
         return ( new PaseComentLogic( $data, $fileName ) )->parse();
     }
-
-
-    private function makeTable( $data )
-    {
-        $return = ( new ConstructTableLogic( $data ) )->construct();
-
-        return $return;
-    }
 }
