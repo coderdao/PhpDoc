@@ -7,6 +7,7 @@
 
 namespace Abo\Phpdoc;
 
+use Abo\Phpdoc\Logic\ConstructTableLogic;
 use Abo\Phpdoc\Logic\PaseComentLogic;
 
 class Doc
@@ -149,41 +150,7 @@ class Doc
      */
     private function makeTable( $data )
     {
-        $return = '<div id="'.base64_encode($data['requestUrl']).'" class="api-main">
-        <div class="title">'.$data['methodName'].'</div>
-        <div class="body">
-            <table class="layui-table">
-                <thead>
-                    <tr>
-                        <th> '.$data['requestName'].' </th>
-                        <th rowspan="3"> '.$data['requestUrl'].' </th>
-                    </tr>
-                </thead>
-            </table>
-        </div>';
-
-
-
-        // 返回
-        if( $data['return'] ){
-            $return .= '<div class="body">
-            <table class="layui-table">
-                <thead>
-                    <tr> <th> 返回名称 </th> <th> 返回类型 </th> <th> 返回说明 </th> </tr>
-                </thead>
-                <tbody>';
-            foreach($data['return'] as $param){
-                $return .= '<tr>
-                <td> '.$param['var'].' </td> <td> '.$param['type'].' </td> <td> '.$param['about'].' </td>
-            </tr>';
-            }
-            $return .= '</tbody>
-            </table>
-        </div>';
-        }
-
-        $return .= ' <hr>
-        </div>';
+        $return = ( new ConstructTableLogic( $data ) )->construct();
 
         return $return;
     }

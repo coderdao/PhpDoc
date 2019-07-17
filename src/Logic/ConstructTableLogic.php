@@ -21,7 +21,12 @@ class ConstructTableLogic
     public function construct()
     {
         $this->constructTitle();
-        $this->constructParam();
+
+        $this->constructArray( 'param', '参数' );
+        $this->constructArray( 'return', '返回' );
+        $this->constructArray( 'throws', '异常' );
+
+        return $this->tableHtml.'<hr></div>';
     }
 
     /**
