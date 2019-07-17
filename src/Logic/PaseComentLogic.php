@@ -32,21 +32,7 @@ class PaseComentLogic
         $this->paseFunctionName();
         $this->paseMethodName();
 
-        preg_match_all('/\s+\*\s+@param\s+(.*?)\s+(.*?)\s+(.*?)\s/', $data, $matches);
-        if(empty($matches[1])){
-            $return['param'] = array();
-        }else{
-            for($i=0;$i<count($matches[1]);$i++){
-                $type = !empty($matches[1][$i]) ? $matches[1][$i] : '[null]';
-                $var = !empty($matches[2][$i]) ? $matches[2][$i] : '[null]';
-                $about = !empty($matches[3][$i]) ? $matches[3][$i] : '[null]';
-                $return['param'][] = array(
-                    'type' => $type,
-                    'var' => $var,
-                    'about' => $about,
-                );
-            }
-        }
+
         preg_match_all('/\s+\*\s+@return\s+(.*?)\s+(.*?)\s+(.*?)\s/', $data, $matches);
         $return['return'] = array();
         if(empty($matches[1])){
@@ -139,5 +125,39 @@ class PaseComentLogic
             !empty($matches['requestUrl'][0]) ? $matches['requestUrl'][0] : '[null]';
 
         return [ $this->paseRet['requestName'], $this->paseRet['requestUrl'] ];
+    }
+
+    /**
+     * 解析 参数
+     * @example: @param HeadImgController::index   => HeadImgController::index
+     * @example: @url /fasterapi/head_img           => /fasterapi/head_img
+     * @return array
+     */
+    protected function paseParam()
+    {
+
+        preg_match_all(
+            '/\s+\*\s+@param\s+(.*?)\s+(.*?)\s+(.*?)\s/',
+            $this->data,
+            $matches
+        );
+
+        if( empty( $matches[ 1 ] ) ) {
+            $return['param'] = array();
+        } else {
+            $count4Matches = count( $matches[ 1 ] );
+
+            for ( $i=0; $i < $count4Matches; $i++ ) {
+                $type = !empty( $matches[1][$i] ) ? $matches[1][$i] : '[null]';
+                $var = !empty( $matches[2][$i] ) ? $matches[2][$i] : '[null]';
+                $about = !empty( $matches[3][$i] ) ? $matches[3][$i] : '[null]';
+
+                $return['param'][] = [
+                    'type' => $type,
+                    'var' => $var,
+                    'about' => $about,
+                ];
+            }
+        }
     }
 }
