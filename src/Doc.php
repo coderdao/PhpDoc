@@ -1,4 +1,10 @@
 <?php
+/**
+ * Function: 文档生成
+ * Abo 2019/7/17 16:19
+ * Email: abo2013@foxmail.com
+ */
+
 namespace Abo\Phpdoc;
 
 class Doc
@@ -201,19 +207,16 @@ class Doc
      * @param array $data 每个API的信息 由parse返回的
      * @return string html代码
      */
-    private function makeTable($data){
+    private function makeTable( $data )
+    {
         $return = '<div id="'.base64_encode($data['requestUrl']).'" class="api-main">
         <div class="title">'.$data['methodName'].'</div>
         <div class="body">
             <table class="layui-table">
                 <thead>
                     <tr>
-                        <th>
-                        '.$data['requestName'].'
-                        </th>
-                        <th rowspan="3">
-                        '.$data['requestUrl'].'
-                        </th>
+                        <th> '.$data['requestName'].' </th>
+                        <th rowspan="3"> '.$data['requestUrl'].' </th>
                     </tr>
                 </thead>
             </table>
@@ -222,30 +225,11 @@ class Doc
             $return .= '                    <div class="body">
             <table class="layui-table">
                 <thead>
-                    <tr>
-                        <th>
-                            请求名称
-                        </th>
-                        <th>
-                            请求类型
-                        </th>
-                        <th>
-                            请求说明
-                        </th>
-                    </tr>
+                    <tr> <th> 请求名称 </th> <th> 请求类型 </th> <th> 请求说明 </th> </tr>
                 </thead>
                 <tbody>';
             foreach($data['param'] as $param){
-                $return .= '<tr>
-                <td>
-                    '.$param['var'].'
-                </td>
-                <td>
-                '.$param['type'].'
-                </td>
-                <td>
-                '.$param['about'].'
-                </td>
+                $return .= '<tr> <td> '.$param['var'].' </td> <td> '.$param['type'].' </td> <td> '.$param['about'].' </td>
             </tr>';
             }
             $return .= '</tbody>
@@ -256,30 +240,12 @@ class Doc
             $return .= '<div class="body">
             <table class="layui-table">
                 <thead>
-                    <tr>
-                        <th>
-                            返回名称
-                        </th>
-                        <th>
-                            返回类型
-                        </th>
-                        <th>
-                            返回说明
-                        </th>
-                    </tr>
+                    <tr> <th> 返回名称 </th> <th> 返回类型 </th> <th> 返回说明 </th> </tr>
                 </thead>
                 <tbody>';
             foreach($data['return'] as $param){
                 $return .= '<tr>
-                <td>
-                    '.$param['var'].'
-                </td>
-                <td>
-                '.$param['type'].'
-                </td>
-                <td>
-                '.$param['about'].'
-                </td>
+                <td> '.$param['var'].' </td> <td> '.$param['type'].' </td> <td> '.$param['about'].' </td>
             </tr>';
             }
             $return .= '</tbody>
@@ -340,14 +306,14 @@ class Doc
             }
         }
 
-        $tempData = file_get_contents(dirname(__FILE__).'/Console/stubs/document.stub');
-        $tempData = str_replace('{name}',$this->name,$tempData);
-        $tempData = str_replace('{main}',$inputData,$tempData);
-        $tempData = str_replace('{right}',$this->makeRight($rightList),$tempData);
-        $tempData = str_replace('{date}',date('Y-m-d H:i:s'),$tempData);
+        $tempData = file_get_contents( dirname(__FILE__) . '/Console/stubs/document.stub' );
+        $tempData = str_replace( '{name}', $this->name, $tempData );
+        $tempData = str_replace( '{main}', $inputData, $tempData );
+        $tempData = str_replace( '{right}', $this->makeRight( $rightList ), $tempData );
+        $tempData = str_replace( '{date}', date( 'Y-m-d H:i:s' ), $tempData );
 
-        if($fetch==false){
-            return file_put_contents($this->savePath.$this->name.'.html',$tempData);
+        if( !$fetch ){
+            return file_put_contents( $this->savePath . $this->name . '.html', $tempData );
         }else{
             return $tempData;
         }
