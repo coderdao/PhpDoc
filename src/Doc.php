@@ -7,6 +7,7 @@
 
 namespace Abo\Phpdoc;
 
+use Abo\Phpdoc\Logic\ConstructRightMenuLogic;
 use Abo\Phpdoc\Logic\ConstructTableLogic;
 use Abo\Phpdoc\Logic\PaseComentLogic;
 
@@ -36,10 +37,14 @@ class Doc
      */
     public function make( $fetch = true )
     {
-        $fileList = array();
-        $this->getFileList( $this->documentPath, $fileList );
         $inputData = ''; // 主体部分表格
-        $rightList = array(); // 侧边栏列表
+        $rightList = []; // 侧边栏列表
+        $fileList = [];
+
+        $MenuLogic = new ConstructRightMenuLogic();
+        $this->getFileList( $this->documentPath, $fileList );
+
+
         foreach( $fileList as $fileName ){
             $fileData = file_get_contents( $fileName );
             $data = $this->catchEvery( $fileData );
@@ -59,7 +64,7 @@ class Doc
         $tempData = file_get_contents( dirname(__FILE__) . '/Console/stubs/document.stub' );
         $tempData = str_replace( '{name}', $this->name, $tempData );
         $tempData = str_replace( '{main}', $inputData, $tempData );
-        $tempData = str_replace( '{right}', $this->makeRight( $rightList ), $tempData );
+        $tempData = str_replace( '{right}', $MenuLogic->construct( $rightList ), $tempData );
         $tempData = str_replace( '{date}', date( 'Y-m-d H:i:s' ), $tempData );
 
         if( !$fetch ){

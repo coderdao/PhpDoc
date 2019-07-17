@@ -11,83 +11,25 @@ namespace Abo\Phpdoc\Logic;
 
 class ConstructRightMenuLogic
 {
-    private $data, $tableHtml = ''; // 每个API的信息 由parse返回的
-
-    public function __construct( array $paseData )
-    {
-        $this->data = $paseData;
-    }
-
-    public function construct()
-    {
-        $this->constructTitle();
-
-        $this->constructArray( 'param', '参数' );
-        $this->constructArray( 'return', '返回' );
-        $this->constructArray( 'throws', '异常' );
-
-        return $this->tableHtml.'<hr></div>';
-    }
-
     /**
-     * 构建头部
-     * @return string
+     * 生成侧边栏
+     * @param array $rightList 侧边列表数组
+     * @return string html代码
      */
-    private function constructTitle()
+    public function construct( array $rightList )
     {
-        $this->tableHtml = '<div id="'.base64_encode( $this->data['requestUrl']).'" class="api-main">
-        <div class="title">'. $this->data['methodName'].'</div>
-        <div class="body">
-            <table class="layui-table">
-                <thead>
-                    <tr>
-                        <th> '. $this->data['requestName'].' </th>
-                        <th rowspan="3"> '. $this->data['requestUrl'].' </th>
-                    </tr>
-                </thead>
-            </table>
-        </div>';
+        $return = '';
+        if ( !$rightList ) { return $return; }
 
-        return $this->tableHtml;
-    }
-
-    /**
-     * 构建 数组内容: 请求参数/返回
-     * @return string
-     */
-    private function constructArray( string $constructArrayKey, string $label )
-    {
-        if ( !$constructArrayKey ) { return $this->tableHtml; }
-
-        // 请求参数
-        $data = $this->data;
-        if( !isset( $data[ $constructArrayKey ] ) || !$data[ $constructArrayKey ] ){ return $this->tableHtml; }
-
-        $this->tableHtml .= '<div class="body">
-                <table class="layui-table">
-                    <thead>
-                        <tr> 
-                            <th>'.$label.'名称</th> 
-                            <th>'.$label.'类型</th> 
-                            <th>'.$label.'说明</th> 
-                        </tr>
-                    </thead>
-                    <tbody>';
-
-        foreach( $data[ $constructArrayKey ] as $param ){
-            $this->tableHtml .= "<tr> 
-                    <td>{$param['var']}</td> 
-                    <td>{$param['type']}</td> 
-                    <td>{$param['about']}</td>
-                </tr>";
+        foreach( $rightList as $d => $file ) {
+            $return .= '<blockquote class="layui-elem-quote layui-quote-nm right-item-title">'.$d.'</blockquote>
+            <ul class="right-item">';
+            foreach( $file as $one ) {
+                $return .= '<li><a href="#'.base64_encode($one['requestUrl']).'"><cite>'.$one['methodName'].'</cite><em>'.$one['requestUrl'].'</em></a></li>';
+            }
+            $return .= '</ul>';
         }
 
-        $this->tableHtml .= '</tbody>
-                </table>
-            </div>';
-
-        return $this->tableHtml;
+        return $return;
     }
-
-
 }
