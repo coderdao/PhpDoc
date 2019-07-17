@@ -42,6 +42,7 @@ class Doc
         $fileList = [];
 
         $MenuLogic = new ConstructRightMenuLogic();
+        $MenuLogic = new ConstructTableLogic();
         $this->getFileList( $this->documentPath, $fileList );
 
 

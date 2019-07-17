@@ -18,6 +18,12 @@ class ConstructTableLogic
         $this->data = $paseData;
     }
 
+    public function data( array $paseData )
+    {
+        $this->data = $paseData;
+        return $this;
+    }
+
     public function construct()
     {
         $this->constructTitle();
