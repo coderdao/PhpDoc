@@ -41,8 +41,8 @@ class Doc
         $rightList = []; // 侧边栏列表
         $fileList = [];
 
-        $MenuLogic = new ConstructRightMenuLogic();
-        $MenuLogic = new ConstructTableLogic();
+        $ConstructMenu = new ConstructRightMenuLogic();
+        $ConstructTable = new ConstructTableLogic();
         $this->getFileList( $this->documentPath, $fileList );
 
 

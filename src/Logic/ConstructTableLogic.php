@@ -13,7 +13,7 @@ class ConstructTableLogic
 {
     private $data, $tableHtml = ''; // 每个API的信息 由parse返回的
 
-    public function __construct( array $paseData )
+    public function __construct( array $paseData = [] )
     {
         $this->data = $paseData;
     }
@@ -26,6 +26,8 @@ class ConstructTableLogic
 
     public function construct()
     {
+        if ( $this->data ) { return ''; }
+
         $this->constructTitle();
 
         $this->constructArray( 'param', '参数' );
