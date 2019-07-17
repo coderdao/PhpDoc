@@ -20,6 +20,7 @@ class ConstructTableLogic
      */
     public function data( array $paseData )
     {
+        $this->tableHtml = '';
         $this->data = $paseData;
         return $this;
     }
@@ -30,7 +31,7 @@ class ConstructTableLogic
      */
     public function construct()
     {
-        if ( $this->data ) { return ''; }
+        if ( !$this->data ) { return ''; }
 
         $this->constructTitle();
 
