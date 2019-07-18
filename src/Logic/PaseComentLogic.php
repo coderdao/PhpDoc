@@ -214,7 +214,7 @@ class PaseComentLogic
 
 
                 if ( $var != '*/' && $var != '' ) {
-                    $this->paseRet[ 'return' ][] = [
+                    $this->paseRet[ 'return' ][] = [ // throws => 异常也算是种返回
                         'type' => $type,
                         'var' => $var,
                         'about' => $about,
